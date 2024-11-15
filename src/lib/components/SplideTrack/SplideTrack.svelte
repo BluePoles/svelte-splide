@@ -6,7 +6,7 @@
   export { className as class };
 </script>
 
-<div class={ classNames( 'splide__track', className ) } { ...$$restProps }>
+<div class={ classNames( 'splide__track', className ) } { ...$props() }>
   <ul class="splide__list">
     <slot/>
   </ul>

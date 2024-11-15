@@ -6,6 +6,6 @@
   export { className as class };
 </script>
 
-<li class={ classNames( 'splide__slide', className ) } { ...$$restProps }>
+<li class={ classNames( 'splide__slide', className ) } { ...$props }>
   <slot/>
 </li>

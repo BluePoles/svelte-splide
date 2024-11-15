@@ -22,8 +22,7 @@
 	<h2>Basic</h2>
 
 	<Splide
-    id="basic-example"
-		options={ options }
+    options={ options }
 		on:mounted={ e => console.log( e.detail.splide.length ) }
 		on:move={ e => console.log( 'move to', e?.detail?.index ) }
 	>

@@ -61,6 +61,7 @@
     "@sveltejs/adapter-static": "^3.0.6",
     "office-addin-dev-certs": "^1.13.5",
     "svelte-kit": "^1.2.0",
+    "svelte-migrate": "^1.6.9",
     "vite": "^5.4.11"
   }
 }
