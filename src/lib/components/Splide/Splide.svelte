@@ -104,7 +104,7 @@
     splide.mount( extensions, transition );
     prevSlides = getSlides( splide );
 
-    return () => splide.destroy();
+    return () => splide?.destroy();
   } );
 
   afterUpdate( () => {
