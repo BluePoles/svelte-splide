@@ -25,9 +25,9 @@
     id="basic-example"
 		options={ options }
 		on:mounted={ e => console.log( e.detail.splide.length ) }
-		on:move={ e => console.log( 'move to', e.detail.index ) }
+		on:move={ e => console.log( 'move to', e?.detail?.index ) }
 	>
-		{ #each slides as slide }
+		{#each slides as slide }
 			<SplideSlide>
 				<img src={ slide.src } alt={ slide.alt }>
 			</SplideSlide>
