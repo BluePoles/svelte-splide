@@ -4,5 +4,6 @@
 </script>
 
 <main>
+	<h1>Page</h1>
 	<BasicExample />
 </main>

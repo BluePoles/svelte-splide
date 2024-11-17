@@ -1,1 +1,0 @@
-Examples for [Svelte Splide](https://github.com/Splidejs/svelte-splide).

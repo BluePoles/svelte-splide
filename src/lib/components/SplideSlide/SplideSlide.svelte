@@ -1,11 +1,16 @@
 <script lang="ts">
-  import { classNames } from '$lib/utils';
+	import { classNames } from '$lib/utils'
 
-
-  let className: string | undefined = undefined;
-  export { className as class };
+	let {
+		class: className = undefined,
+		children
+	}: {
+		class?: string | undefined
+		children?: import('svelte').Snippet
+		[key: string]: any
+	} = $props()
 </script>
 
-<li class={ classNames( 'splide__slide', className ) } { ...$props }>
-  <slot/>
+<li class={classNames('splide__slide', className)}>
+	{@render children?.()}
 </li>

@@ -29,10 +29,10 @@ import {
   EVENT_VISIBLE,
 } from '@splidejs/splide';
 import type { PaginationData, PaginationItem, SlideComponent } from '@splidejs/splide';
-
+import type { EventDetail, Events } from '$lib/types/events';
 
 const EVENTS_WITHOUT_ARGS: Array<keyof EventMap> = [
-  EVENT_MOUNTED,
+  //EVENT_MOUNTED, -> todo: splidejs events do we need this or splide should take over?
   EVENT_REFRESH,
   EVENT_RESIZE,
   EVENT_RESIZED,
@@ -41,7 +41,7 @@ const EVENTS_WITHOUT_ARGS: Array<keyof EventMap> = [
   EVENT_DRAGGED,
   EVENT_SCROLL,
   EVENT_SCROLLED,
-  EVENT_DESTROY,
+  //EVENT_DESTROY, -> todo: splidejs events do we need this or splide should take over?
   EVENT_AUTOPLAY_PLAY,
   EVENT_AUTOPLAY_PAUSE,
 ];
@@ -124,6 +124,86 @@ export function bind<T extends ( ...args: any[] ) => any>( splide: Splide, dispa
       dispatch( event );
     } );
   } );
+}
+
+/**
+ * Maps Svelte events to corresponding Splide.js events.
+ *
+ * @param splide - A Splide instance.
+ * @param events - An object containing Svelte event handlers.
+ */
+export function mapEvents(splide: Splide, events: Partial<Events>): void {
+  const eventMap: Record<string, keyof EventMap> = {
+    active: 'active',
+    arrowsMounted: 'arrows:mounted',
+    arrowsUpdated: 'arrows:updated',
+    autoplayPause: 'autoplay:pause',
+    autoplayPlay: 'autoplay:play',
+    autoplayPlaying: 'autoplay:playing',
+    click: 'click',
+    drag: 'drag',
+    dragged: 'dragged',
+    dragging: 'dragging',
+    hidden: 'hidden',
+    inactive: 'inactive',
+    lazyloadLoaded: 'lazyload:loaded',
+    move: 'move',
+    moved: 'moved',
+    navigationMounted: 'navigation:mounted',
+    paginationMounted: 'pagination:mounted',
+    paginationUpdated: 'pagination:updated',
+    refresh: 'refresh',
+    resize: 'resize',
+    resized: 'resized',
+    scroll: 'scroll',
+    scrolled: 'scrolled',
+    updated: 'updated',
+    visible: 'visible',
+    mounted: 'mounted',
+    ready: 'ready',
+    overflow: 'overflow',
+    destroy: 'destroy',
+    arrowsUpdatedWithIndex: 'arrows:updated', // Custom mapping for arrows:updated with index
+  };
+
+  Object.entries(events).forEach(([key, handler]) => {
+    if (handler && eventMap[key]) {
+      const splideEvent = eventMap[key];
+      const callback = (args: any[]) => handler({ splide, ...args });
+
+      switch (splideEvent) {
+        case 'click':
+          splide.on(splideEvent, (Slide: SlideComponent, e: MouseEvent) => callback({ Slide, e }));
+          break;
+        case 'move':
+        case 'moved':
+          splide.on(splideEvent, (index: number, prev: number, dest: number) => callback({ index, prev, dest }));
+          break;
+        case 'arrows:mounted':
+        case 'arrows:updated':
+          splide.on(splideEvent, (prev: HTMLButtonElement, next: HTMLButtonElement, prevIndex?: number, nextIndex?: number) => callback({ prev, next, prevIndex, nextIndex }));
+          break;
+        case 'pagination:mounted':
+        case 'pagination:updated':
+          splide.on(splideEvent, (data: PaginationData, prev: PaginationItem, curr: PaginationItem) => callback({ data, prev, curr }));
+          break;
+        case 'navigation:mounted':
+          splide.on(splideEvent, (splides: Splide[]) => callback({ splides }));
+          break;
+        case 'autoplay:playing':
+          splide.on(splideEvent, (rate: number) => callback({ rate }));
+          break;
+        case 'lazyload:loaded':
+          splide.on(splideEvent, (img: HTMLImageElement, Slide: SlideComponent) => callback({ img, Slide }));
+          break;
+        case 'overflow':
+          splide.on(splideEvent, (overflow: boolean) => callback({ overflow }));
+          break;
+        default:
+          splide.on(splideEvent, () => callback({}));
+      }
+    }
+  });
 }
 
 /**
