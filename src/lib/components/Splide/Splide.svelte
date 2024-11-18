@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type {
-		ArrowsEventDetail,
 		EventDetail,
 		MoveEventDetail,
 		SlideEventDetail
@@ -21,7 +20,7 @@
 	} from '@splidejs/splide'
 	import { Splide } from '@splidejs/splide'
 	import { onMount } from 'svelte'
-	import { bind, mapEvents } from './bind'
+	import { mapEvents } from './bind'
 	import { SplideTrack } from '$lib/components'
 	import type { Events } from '$lib/types'
 
@@ -29,7 +28,7 @@
 		children,
 		className,
 		options = $bindable(),
-		splide,
+		//splide -> todo: why do we need this as prop, why would caller pass splide instance? Any use case for this? 
 		extensions,
 		transition,
 		hasTrack = true,
@@ -38,11 +37,16 @@
 		children?: import('svelte').Snippet
 		className?: string
 		options?: Options
-		splide?: Splide
+		//splide?: Splide -> todo: why do we need this as prop, why would caller pass splide instance? Any use case for this? 
 		extensions?: Record<string, ComponentConstructor>
 		transition?: ComponentConstructor
 		hasTrack?: boolean
 	} & Events = $props()
+
+	/**
+	 * The root element.
+	 */
+	 let splide: Splide
 
 	/**
 	 * The root element.
@@ -71,9 +75,9 @@
 	onMount(() => {
 		splide = new Splide(root, options)
 		mapEvents(splide, events);
-
 		splide.mount(extensions, transition)
 		prevSlides = getSlides(splide)
+		console.log('mounted')
 
 		// Dispatch the mounted event
 		//if (events.mounted) events.mounted({ splide })
@@ -126,7 +130,4 @@
 		{@render children?.()}
 	{/if}
 </div>
-<!-- @migration-task Error while migrating Svelte code: Cannot use `export let` in runes mode — use `$props()` instead -->
-<!-- @migration-task Error while migrating Svelte code: afterUpdate cannot be used in runes mode see effects below -->
-<!-- @migration-task:  <svelte:options accessors /> -->
-<!-- @migartion-task: createEventDispatcher -->
+

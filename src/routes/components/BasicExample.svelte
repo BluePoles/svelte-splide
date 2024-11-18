@@ -2,7 +2,7 @@
   import type { Options, PaginationData, PaginationItem, SlideComponent } from '@splidejs/splide';
   import { Splide, SplideSlide } from '$lib/components';
   import { generateSlides } from '../utils';
-  import type { EventDetail, MoveEventDetail, SlideEventDetail, ArrowsEventDetail } from '$lib/types/events';
+  import type { OverflowEventDetail, EventDetail, MoveEventDetail, SlideEventDetail, ArrowsMountedEventDetail, ArrowsUpdatedEventDetail, AutoplayPlayingEventDetail, LazyloadLoadedEventDetail, NavigationMountedEventDetail, PaginationMountedEventDetail, PaginationUpdatedEventDetail, OptionsEventDetail } from '$lib/types/events';
   import Index from '../index.svelte'
   
   const slides = generateSlides();
@@ -34,10 +34,10 @@
     active={(e: SlideEventDetail) => {
       console.log('Slide is active.', e.Slide);
     }}
-    arrowsMounted={(e: ArrowsEventDetail) => {
+    arrowsMounted={(e: ArrowsMountedEventDetail) => {
       console.log('Arrows are mounted.', e.prev, e.next);
     }}
-    arrowsUpdated={(e: ArrowsEventDetail) => {
+    arrowsUpdated={(e: ArrowsUpdatedEventDetail) => {
       console.log('Arrows are updated.', e.prev, e.next);
     }}
     autoplayPause={(e: EventDetail) => {
@@ -46,7 +46,7 @@
     autoplayPlay={(e: EventDetail) => {
       console.log('Autoplay is playing.', e.splide);
     }}
-    autoplayPlaying={(e: EventDetail<{ rate: number }>) => {
+    autoplayPlaying={(e: AutoplayPlayingEventDetail) => {
       console.log('Autoplay is playing with rate.', e.rate);
     }}
     click={(e: SlideEventDetail) => {
@@ -67,7 +67,7 @@
     inactive={(e: SlideEventDetail) => {
       console.log('Slide is inactive.', e.Slide);
     }}
-    lazyloadLoaded={(e: EventDetail<{ img: HTMLImageElement, Slide: SlideComponent }>) => {
+    lazyloadLoaded={(e: LazyloadLoadedEventDetail) => {
       console.log('Lazyload image is loaded.', e.img, e.Slide);
     }}
     move={(e: MoveEventDetail) => {
@@ -76,13 +76,13 @@
     moved={(e: MoveEventDetail) => {
       console.log('Moved to', e.index);
     }}
-    navigationMounted={(e: EventDetail<{ splides: Splide[] }>) => {
+    navigationMounted={(e: NavigationMountedEventDetail) => {
       console.log('Navigation is mounted.', e.splides);
     }}
-    paginationMounted={(e: EventDetail<{ data: PaginationData, item: PaginationItem }>) => {
+    paginationMounted={(e: PaginationMountedEventDetail) => {
       console.log('Pagination is mounted.', e.data, e.item);
     }}
-    paginationUpdated={(e: EventDetail<{ data: PaginationData, prev: PaginationItem, curr: PaginationItem }>) => {
+    paginationUpdated={(e: PaginationUpdatedEventDetail) => {
       console.log('Pagination is updated.', e.data, e.prev, e.curr);
     }}
     refresh={(e: EventDetail) => {
@@ -100,11 +100,17 @@
     scrolled={(e: EventDetail) => {
       console.log('Scrolled.', e.splide);
     }}
-    updated={(e: EventDetail<{ options: Options }>) => {
+    updated={(e: OptionsEventDetail) => {
       console.log('Splide is updated.', e.options);
     }}
     visible={(e: SlideEventDetail) => {
       console.log('Slide is visible.', e.Slide);
+    }}
+    ready={(e: EventDetail) => {
+      console.log('Splide is ready.', e.splide);
+    }}
+    overflow={(e: OverflowEventDetail) => {
+      console.log('Splide overflow.', e.overflow);
     }}
   >
     {#each slides as slide}
