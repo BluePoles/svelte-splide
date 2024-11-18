@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Options, PaginationData, PaginationItem, SlideComponent } from '@splidejs/splide';
+  import type { Options } from '@splidejs/splide';
   import { Splide, SplideSlide } from '$lib/components';
   import { generateSlides } from '../utils';
   import type { OverflowEventDetail, EventDetail, MoveEventDetail, SlideEventDetail, ArrowsMountedEventDetail, ArrowsUpdatedEventDetail, AutoplayPlayingEventDetail, LazyloadLoadedEventDetail, NavigationMountedEventDetail, PaginationMountedEventDetail, PaginationUpdatedEventDetail, OptionsEventDetail } from '$lib/types/events';
-  import Index from '../index.svelte'
+  
   
   const slides = generateSlides();
   const options: Options = {
@@ -18,12 +18,15 @@
       },
     },
   }
+
+  let mysplide:Splide;
 </script>
 
 <div class="wrapper">
   <h2>Basic</h2>
 
   <Splide
+    bind:this={mysplide}
     {options}
     mounted={(e: EventDetail) => {
       console.log('Splide is mounted.', e.splide);
@@ -119,4 +122,8 @@
       </SplideSlide>
     {/each}
   </Splide>
+</div>
+<div>
+  <button onclick={(e)=>{e.preventDefault();mysplide.go('>')}}>
+    Next
 </div>

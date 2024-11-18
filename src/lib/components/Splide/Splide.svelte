@@ -1,22 +1,13 @@
 <script lang="ts">
-	import type {
-		EventDetail,
-		MoveEventDetail,
-		SlideEventDetail
-	} from '$lib/types'
 	import {
 		classNames,
 		getSlides,
 		isEqualDeep,
 		isEqualShallow,
-		merge
 	} from '$lib/utils'
 	import type {
 		ComponentConstructor,
-		Options,
-		PaginationData,
-		PaginationItem,
-		SlideComponent
+		Options
 	} from '@splidejs/splide'
 	import { Splide } from '@splidejs/splide'
 	import { onMount } from 'svelte'
@@ -77,15 +68,9 @@
 		mapEvents(splide, events);
 		splide.mount(extensions, transition)
 		prevSlides = getSlides(splide)
-		console.log('mounted')
-
-		// Dispatch the mounted event
-		//if (events.mounted) events.mounted({ splide })
-
+		
 		return () => {
-			splide?.destroy()
-			// Dispatch the destroy event
-			//if (events.destroy ) events.destroy({ splide });
+			splide?.destroy(true)
 		}
 	})
 
@@ -107,18 +92,18 @@
 	//  *
 	//  * @param control - A control pattern.
 	//  */
-	// export function go(control: number | string): void {
-	// 	splide?.go(control)
-	// }
+	export function go(control: number | string): void {
+		splide?.go(control)
+	}
 
-	// /**
-	//  * Syncs the slider with another Splide.
-	//  *
-	//  * @param target - A target splide instance to sync with.
-	//  */
-	// export function sync(target: Splide): void {
-	// 	splide?.sync(target)
-	// }
+	/**
+	 * Syncs the slider with another Splide.
+	 *
+	 * @param target - A target splide instance to sync with.
+	 */
+	export function sync(target: Splide): void {
+		splide?.sync(target)
+	}
 </script>
 
 <div class={classNames('splide', className)} bind:this={root}>
